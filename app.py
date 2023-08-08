@@ -2,7 +2,7 @@ import streamlit as st
 import openai
 import os
 # Set up the page layout
-st.set_page_config(page_title="Wild Brain Storm", page_icon="5_leaf_clover.png", layout='wide')
+st.set_page_config(page_title="Brain Storm :lighting:", page_icon="5_leaf_clover.png", layout='wide')
 
 # Function to display chat messages
 def display_chat_message(role, content,avatar):
@@ -19,6 +19,7 @@ def display_intro():
     st.write("- **Estructurar Texto Desestructurado:** Te guía en la organización de texto caótico al destilarlo.")
     st.write("- **Extraer Información:** Puede ayudarte a extraer información del texto, como nombres, fechas y otra información relevante que puedas articular.")
     st.write("Recuerda, esta herramienta Brain Storm no es un libro de hechos; piensa en esta herramienta como un trampolín para tus ideas y una forma de iniciar el trabajo productivo.")
+    st.write('To Start, say hello and ask it what it is and how it can help you.
     st.write(":heart: Max")
 
 leslie = "https://raw.githubusercontent.com/Madlittledude/Alexander/main/blackclover.png"
