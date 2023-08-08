@@ -21,8 +21,8 @@ def display_intro():
     st.write("Recuerda, esta herramienta Brain Storm no es un libro de hechos; piensa en esta herramienta como un trampolín para tus ideas y una forma de iniciar el trabajo productivo.")
     st.write(":heart: Max")
 
-leslie = "https://raw.githubusercontent.com/Madlittledude/Wild_Brain_Storm/main/leslie.png"
-wild = "https://raw.githubusercontent.com/Madlittledude/Wild_Brain_Storm/main/wild.png"
+leslie = "https://raw.githubusercontent.com/Madlittledude/Alexander/main/blackclover.png"
+wild = "https://raw.githubusercontent.com/Madlittledude/Alexander/main/Madlittledude 2_white.png"
 def display_chat_interface():
 
     for message in st.session_state.messages:
