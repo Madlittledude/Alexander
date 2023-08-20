@@ -6,10 +6,12 @@ from log import ChatLogger
 # Set up the page layout
 st.set_page_config(page_title="Brain Storm :lighting:", page_icon="5_leaf_clover.png", layout='wide')
 
+logger = ChatLogger('alexander')
 # Function to display chat messages
 def display_chat_message(role, content,avatar):
     with st.chat_message(role, avatar=avatar):
         st.markdown(content)
+
 
 def display_intro():
     st.title("Bienvenido, Alexander, a tu Sesión con Brain Storm :lightning_cloud:")
