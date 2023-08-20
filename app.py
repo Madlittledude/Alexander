@@ -1,4 +1,4 @@
-
+from auth import authenticate
 
 import streamlit as st
 import openai
