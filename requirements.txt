@@ -24,6 +24,7 @@ multidict==6.0.4
 numpy==1.25.2
 openai==0.27.8
 packaging==23.1
+boto3
 pandas==2.0.3
 Pillow==9.5.0
 protobuf==4.23.4
