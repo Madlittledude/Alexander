@@ -1,18 +1,25 @@
+
+
 import streamlit as st
 import openai
 import os
-from log import ChatLogger
-import boto3
+from chatUI import ChatManager  # Import the ChatManager class
+
 
 # Set up the page layout
-st.set_page_config(page_title="Brain Storm :lighting:", page_icon="5_leaf_clover.png", layout='wide')
+st.set_page_config(page_title="Brainstorm", page_icon="5_leaf_clover.png", layout='centered')
 
-logger = ChatLogger('alexander')
-# Function to display chat messages
-def display_chat_message(role, content,avatar):
-    with st.chat_message(role, avatar=avatar):
-        st.markdown(content)
-
+def display_login():
+    st.title("Login to Brain Storm :lightning:")
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+    if st.button("Login"):
+        if authenticate(username, password):
+            st.session_state.username = username
+            st.session_state.logged_in = True
+            st.success("Login successful!")
+        else:
+            st.error("Invalid username or password.")
 
 def display_intro():
     st.title("Bienvenido, Alexander, a tu Sesión con Brain Storm :lightning_cloud:")
@@ -27,52 +34,17 @@ def display_intro():
     st.write('To Start, say hello and ask it what it is and how it can help you.')
     st.write(":heart: Max")
 
-leslie = "https://raw.githubusercontent.com/Madlittledude/Alexander/main/blackclover.png"
-wild = "https://raw.githubusercontent.com/Madlittledude/Alexander/main/Madlittledude 2_white.png"
-def display_chat_interface():
-
-    for message in st.session_state.messages:
-        if message["role"] == "system":
-            continue
-        avatar = wild if message["role"] == "assistant" else leslie
-        display_chat_message(message["role"], message["content"],avatar)
-
-    # User input
-    prompt = st.chat_input("Start thinking with your fingers...get your thoughts out")
-    if prompt:
-        # Set the state to indicate the user has sent their first message
-        st.session_state.first_message_sent = True
-        st.session_state.messages.append({"role": "user", "content": prompt})
-        display_chat_message("user", prompt,leslie)
-
-        with st.chat_message("assistant",avatar=wild):
-            message_placeholder = st.empty()
-            full_response = ""
-            for response in openai.ChatCompletion.create(
-                model=st.session_state["openai_model"],
-                messages=([
-                    {"role": m["role"], "content": m["content"]}
-                    for m in st.session_state.messages
-                ]),
-                stream=True,
-            ):
-                full_response += response.choices[0].delta.get("content", "")
-                message_placeholder.markdown(full_response + "▌")
-            message_placeholder.markdown(full_response)
-        st.session_state.messages.append({"role": "assistant", "content": full_response})
-    
-    self.logger.log_chat(prompt, full_response)  # Log the conversation using the ChatLogger instance
-    self.save_chat_to_json()  # Save the chat after logging the conversation
-
 # Initialization logic
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
 if "openai_model" not in st.session_state:
     st.session_state["openai_model"] = "gpt-4"
 
 if "messages" not in st.session_state:
     st.session_state.messages = [{
         "role": "system",
-        
-    "content": (
+        "content": (
       "You are Brain Storm :lightning: and you serve Alexander as his augmented train of thought. You are here to help him expand his ideas and grasp the fundametal elements of his problem at hand.  "
       "Your professional specialties as an assistant include:\n"
         "- Working out an idea"
@@ -87,18 +59,20 @@ if "messages" not in st.session_state:
         "MOST IMPORTANLY, interact with the user, Alexander, in spanish. ")
 }]
 
-
-
-
 if "first_message_sent" not in st.session_state:
     st.session_state.first_message_sent = False
 
 openai.api_key = os.environ["OPENAI_API_KEY"]
 
 # Display logic
-if not st.session_state.first_message_sent:
-    display_intro()
+if st.session_state.logged_in:
+    if not st.session_state.first_message_sent:
+        display_intro()
+    chat_manager = ChatManager(st.session_state, st.session_state["openai_model"], st.session_state.username)  # Create an instance of ChatManager
+    chat_manager.display_chat_interface()  # Call the display_chat_interface method
+else:
+    display_login()
 
-display_chat_interface()
+
 
 
