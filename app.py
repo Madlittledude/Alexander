@@ -1,6 +1,8 @@
 import streamlit as st
 import openai
 import os
+from log import ChatLogger
+
 # Set up the page layout
 st.set_page_config(page_title="Brain Storm :lighting:", page_icon="5_leaf_clover.png", layout='wide')
 
@@ -55,7 +57,9 @@ def display_chat_interface():
                 message_placeholder.markdown(full_response + "▌")
             message_placeholder.markdown(full_response)
         st.session_state.messages.append({"role": "assistant", "content": full_response})
-
+    
+    self.logger.log_chat(prompt, full_response)  # Log the conversation using the ChatLogger instance
+    self.save_chat_to_json()  # Save the chat after logging the conversation
 
 # Initialization logic
 if "openai_model" not in st.session_state:
