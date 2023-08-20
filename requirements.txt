@@ -1,7 +1,5 @@
 
 openai
-
 boto3
-s3fs
 git+https://github.com/streamlit/files-connection
 streamlit==1.25.0
