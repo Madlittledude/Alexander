@@ -2,6 +2,7 @@ import streamlit as st
 import openai
 import os
 from log import ChatLogger
+import boto3
 
 # Set up the page layout
 st.set_page_config(page_title="Brain Storm :lighting:", page_icon="5_leaf_clover.png", layout='wide')
