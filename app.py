@@ -15,13 +15,12 @@ def display_login():
     password = st.text_input("Password", type="password")
     if st.button("Login"):
         if authenticate(username, password):
-            st.session_state.username = username  # Store username in session state
+            st.session_state.username = username
             st.session_state.logged_in = True
-            st.success("Login successful!")
-            return True  # Indicate successful login
+            st.experimental_rerun()  # Rerun the script to reflect the new state
         else:
             st.error("Invalid username or password.")
-    return False  # Indicate failed login or no attempt yet
+
 
 def display_intro():
     if st.session_state.get("logged_in"):  # Check if user is logged in
@@ -74,11 +73,11 @@ openai.api_key = os.environ["OPENAI_API_KEY"]
 if st.session_state.logged_in:
     if not st.session_state.first_message_sent:
         display_intro()
-    chat_manager = ChatManager(st.session_state, st.session_state["openai_model"], st.session_state.username)  # Create an instance of ChatManager
-    chat_manager.display_chat_interface()  # Call the display_chat_interface method
+        st.session_state.first_message_sent = True  # Set to True after first execution
+    chat_manager = ChatManager(st.session_state, st.session_state["openai_model"], st.session_state.username)
+    chat_manager.display_chat_interface()
 else:
-    if display_login():
-        display_intro()
+    display_login()
 
 
 
