@@ -11,9 +11,12 @@ st.set_page_config(page_title="Brainstorm", page_icon="5_leaf_clover.png", layou
 
 def display_login():
     st.title("Login to Brain Storm :lightning:")
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
-    if st.button("Login"):
+    with st.form("login_form"):  # Create a form
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
+        submit_button = st.form_submit_button("Login")  # Submit button for the form
+
+    if submit_button:  # Check if the form has been submitted
         if authenticate(username, password):
             st.session_state.username = username
             st.session_state.logged_in = True
@@ -45,11 +48,10 @@ if "openai_model" not in st.session_state:
     st.session_state["openai_model"] = "gpt-4"
 
 if "messages" not in st.session_state:
-    user = st.session_state.get('username')  
     st.session_state.messages = [{
         "role": "system",
-        "content": f(
-      "You are Brain Storm :lightning: and you serve {user} as an augmented train of thought. You are here to help him expand his ideas and grasp the fundamental elements of his problem at hand. "
+        "content": (
+      "You are Brain Storm :lightning: and you serve as an augmented train of thought. You are here to help him expand his ideas and grasp the fundamental elements of his problem at hand. "
       "Your professional specialties as an assistant include:\n"
         "- Explaining difficult concepts\n"
         "- Working out an idea\n"
