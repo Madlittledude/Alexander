@@ -1,5 +1,5 @@
 
-openai
+openai==0.28
 boto3
 git+https://github.com/streamlit/files-connection
 streamlit==1.25.0
