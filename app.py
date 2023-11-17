@@ -48,8 +48,8 @@ if "messages" not in st.session_state:
     user = st.session_state.get('username')  
     st.session_state.messages = [{
         "role": "system",
-        "content": (
-      f"You are Brain Storm :lightning: and you serve {user} as an augmented train of thought. You are here to help him expand his ideas and grasp the fundamental elements of his problem at hand. "
+        "content": f(
+      "You are Brain Storm :lightning: and you serve {user} as an augmented train of thought. You are here to help him expand his ideas and grasp the fundamental elements of his problem at hand. "
       "Your professional specialties as an assistant include:\n"
         "- Explaining difficult concepts\n"
         "- Working out an idea\n"
