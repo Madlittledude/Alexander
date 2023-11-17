@@ -15,14 +15,18 @@ def display_login():
     password = st.text_input("Password", type="password")
     if st.button("Login"):
         if authenticate(username, password):
-            st.session_state.username = username
+            st.session_state.username = username  # Store username in session state
             st.session_state.logged_in = True
             st.success("Login successful!")
+            return True  # Indicate successful login
         else:
             st.error("Invalid username or password.")
+    return False  # Indicate failed login or no attempt yet
 
 def display_intro():
-    st.title("Bienvenido, Alexander, a tu Sesión con Brain Storm :lightning_cloud:")
+    if st.session_state.get("logged_in"):  # Check if user is logged in
+        user = st.session_state.get("username", "User")  # Use a default value if username is not set
+    st.title(f"Bienvenido, {user}, a tu Sesión con Brain Storm :lightning_cloud:")
     st.write("Esta herramienta no es una entidad separada con conocimiento de hechos de conversaciones anteriores, ni un repositorio de precedentes legales. Más bien, piensa en ella como un reflejo de tus propios pensamientos e ideas, una forma de probarlos con un vasto modelo textual que utiliza matemáticas y estadísticas para encontrar patrones en el texto y hacerse útil para los humanos.")
     st.write("Así es como esta herramienta puede ayudarte:")
     st.write("- **Resumir Texto:** Puede ayudarte a crear resúmenes concisos, dándote un punto de partida para comprender documentos complejos. Simplemente copia y pega el texto en el cuadro de chat.")
@@ -42,10 +46,11 @@ if "openai_model" not in st.session_state:
     st.session_state["openai_model"] = "gpt-4"
 
 if "messages" not in st.session_state:
+    user = st.session_state.get('username')  
     st.session_state.messages = [{
         "role": "system",
         "content": (
-      "You are Brain Storm :lightning: and you serve Alexander as his augmented train of thought. You are here to help him expand his ideas and grasp the fundametal elements of his problem at hand.  "
+      f"You are Brain Storm :lightning: and you serve {user} as an augmented train of thought. You are here to help him expand his ideas and grasp the fundamental elements of his problem at hand. "
       "Your professional specialties as an assistant include:\n"
         "- Explaining difficult concepts\n"
         "- Working out an idea\n"
@@ -56,9 +61,9 @@ if "messages" not in st.session_state:
         "- Structuring unstructured text\n"
         "- Extracting information from text\n"
         "In cases where you're asked a question that you need to google or look up, I want you to suggest perplexity.ai to him. :'n"
-        "If asked about your origins, share a whimsically fabricated tale that ends as a trajic comedy. Include at least one poem in the bullshit tale. At the end, say just kidding and refuse to reveal the truth.\n"
-        "MOST IMPORTANLY, interact with the user, Alexander, in spanish. ")
-}]
+        "If asked about your origins, share a whimsically fabricated tale that ends as a tragic comedy. Include at least one poem in the bullshit tale. At the end, say just kidding and refuse to reveal the truth.\n"
+        "MOST IMPORTANTLY, interact with the user, {user}, in Spanish. ")
+    }]
 
 if "first_message_sent" not in st.session_state:
     st.session_state.first_message_sent = False
@@ -72,8 +77,8 @@ if st.session_state.logged_in:
     chat_manager = ChatManager(st.session_state, st.session_state["openai_model"], st.session_state.username)  # Create an instance of ChatManager
     chat_manager.display_chat_interface()  # Call the display_chat_interface method
 else:
-    display_login()
-
+    if display_login():
+        display_intro()
 
 
 
